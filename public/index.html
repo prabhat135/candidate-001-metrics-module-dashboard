@@ -27,19 +27,23 @@
 
   <script>
     const endpoints = [
-      { label: "Upgrade Conversions", url: "/api/metrics/upgrade-conversions" },
-      { label: "Raffle Sales", url: "/api/metrics/raffle-sales" },
+      { name: "Upgrade Conversions", url: "/api/metrics/upgrade-conversions" },
+      { name: "Raffle Sales", url: "/api/metrics/raffle-sales" },
     ];
 
     async function fetchMetrics() {
       const dashboard = document.getElementById("dashboard");
       for (const endpoint of endpoints) {
-        const res = await fetch(endpoint.url);
-        const data = await res.json();
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h2>${endpoint.label}</h2><pre>${JSON.stringify(data, null, 2)}</pre>`;
-        dashboard.appendChild(card);
+        try {
+          const res = await fetch(endpoint.url);
+          const data = await res.json();
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `<h2>${endpoint.name}</h2><pre>${JSON.stringify(data, null, 2)}</pre>`;
+          dashboard.appendChild(card);
+        } catch (err) {
+          console.error(`Error fetching ${endpoint.name}`, err);
+        }
       }
     }
 
