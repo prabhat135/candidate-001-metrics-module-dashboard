@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Metrics Dashboard</title>
+  <style>
+    body { 
+      font-family: Arial;
+      padding: 2rem;
+      background: #f9f9f9;
+    }
+    .card { 
+      border: 1px solid #ccc; 
+      padding: 1rem; 
+      margin-bottom: 1rem; 
+      border-radius: 10px; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Metrics Dashboard</h1>
+  <div id="dashboard"></div>
+
+  <script>
+    const endpoints = [
+      { label: "Upgrade Conversions", url: "/api/metrics/upgrade-conversions" },
+      { label: "Raffle Sales", url: "/api/metrics/raffle-sales" },
+    ];
+
+    async function fetchMetrics() {
+      const dashboard = document.getElementById("dashboard");
+      for (const endpoint of endpoints) {
+        const res = await fetch(endpoint.url);
+        const data = await res.json();
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h2>${endpoint.label}</h2><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        dashboard.appendChild(card);
+      }
+    }
+
+    fetchMetrics();
+  </script>
+</body>
+</html>
